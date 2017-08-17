@@ -16,6 +16,37 @@ public class Location implements Entity {
         return id;
     }
 
+    @Override
+    public void update(Entity entity) {
+
+        if (!entity.getClass().isAssignableFrom(Location.class)) {
+            throw new IllegalArgumentException();
+        }
+
+        Location patch = (Location) entity;
+
+        if (patch.place != null) {
+            place = patch.place;
+        }
+
+        if (patch.country != null) {
+            country = patch.country;
+        }
+
+        if (patch.city != null) {
+            city = patch.city;
+        }
+
+        if (patch.distance != null) {
+            distance = patch.distance;
+        }
+    }
+
+    @Override
+    public boolean allFieldsFilled() {
+        return place != null && country != null && city != null && distance != null;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

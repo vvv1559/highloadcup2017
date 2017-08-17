@@ -25,6 +25,40 @@ public class User implements Entity {
         return id;
     }
 
+    @Override
+    public void update(Entity entity) {
+        if (!entity.getClass().isAssignableFrom(User.class)) {
+            throw new IllegalArgumentException();
+        }
+
+        User patch = (User) entity;
+
+        if (patch.email != null) {
+            email = patch.email;
+        }
+
+        if (patch.firstName != null) {
+            firstName = patch.firstName;
+        }
+
+        if (patch.lastName != null) {
+            lastName = patch.lastName;
+        }
+
+        if (patch.gender != null) {
+            gender = patch.gender;
+        }
+
+        if (patch.birthDateTimestamp != null) {
+            birthDateTimestamp = patch.birthDateTimestamp;
+        }
+    }
+
+    @Override
+    public boolean allFieldsFilled() {
+        return email != null && firstName != null && lastName != null && gender != null && birthDateTimestamp != null;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }

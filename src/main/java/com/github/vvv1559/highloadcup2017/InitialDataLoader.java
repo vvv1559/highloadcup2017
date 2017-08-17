@@ -1,5 +1,6 @@
-package com.github.vvv1559.highloadcup2017.preloader;
+package com.github.vvv1559.highloadcup2017;
 
+import com.github.vvv1559.highloadcup2017.dao.MetaDao;
 import com.github.vvv1559.highloadcup2017.dao.model.*;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -46,24 +46,23 @@ public class InitialDataLoader {
             Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 ZipEntry zipEntry = entries.nextElement();
-                if (!zipEntry.getName().endsWith(".json")) {
+                String zipEntryName = zipEntry.getName();
+                if (!zipEntryName.endsWith(".json")) {
                     continue;
                 }
 
+                EntityType type = EntityType.valueOf(zipEntryName.substring(0, zipEntryName.indexOf('_')));
+
                 Class<? extends InitialData> dataClass;
-                Consumer<Entity> saver;
-                switch (zipEntry.getName().charAt(0)) {
-                    case 'l':
+                switch (type) {
+                    case locations:
                         dataClass = LocationsData.class;
-                        saver = entity -> metaDao.newLocation((Location) entity);
                         break;
-                    case 'u':
+                    case users:
                         dataClass = UsersData.class;
-                        saver = entity -> metaDao.newUser((User) entity);
                         break;
-                    case 'v':
+                    case visits:
                         dataClass = VisitsData.class;
-                        saver = entity -> metaDao.newVisit((Visit) entity);
                         break;
                     default:
                         continue;
@@ -72,7 +71,7 @@ public class InitialDataLoader {
                 Reader jsonReader = new BufferedReader(
                     new InputStreamReader(zipFile.getInputStream(zipEntry), StandardCharsets.UTF_8));
                 InitialData<Entity> initialData = gson.<InitialData<Entity>>fromJson(jsonReader, dataClass);
-                initialData.getData().forEach(saver);
+                initialData.getData().forEach(e -> metaDao.newEntity(type, e));
             }
         }
     }

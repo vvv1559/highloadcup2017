@@ -20,6 +20,37 @@ public class Visit implements Entity {
         return id;
     }
 
+    @Override
+    public void update(Entity entity) {
+
+        if (!entity.getClass().isAssignableFrom(Visit.class)) {
+            throw new IllegalArgumentException();
+        }
+
+        Visit patch = (Visit) entity;
+
+        if (patch.location != null) {
+            location = patch.location;
+        }
+
+        if (patch.user != null) {
+            user = patch.user;
+        }
+
+        if (patch.visitedAtTimestamp != null) {
+            visitedAtTimestamp = patch.visitedAtTimestamp;
+        }
+
+        if (patch.mark != null) {
+            mark = patch.mark;
+        }
+    }
+
+    @Override
+    public boolean allFieldsFilled() {
+        return location != null && user != null && visitedAtTimestamp != null && mark != null;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
