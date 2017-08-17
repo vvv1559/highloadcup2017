@@ -55,15 +55,15 @@ public class InitialDataLoader {
                 switch (zipEntry.getName().charAt(0)) {
                     case 'l':
                         dataClass = LocationsData.class;
-                        saver = entity -> metaDao.newLocation(entity.getId(), (Location) entity);
+                        saver = entity -> metaDao.newLocation((Location) entity);
                         break;
                     case 'u':
                         dataClass = UsersData.class;
-                        saver = entity -> metaDao.newUser(entity.getId(), (User) entity);
+                        saver = entity -> metaDao.newUser((User) entity);
                         break;
                     case 'v':
                         dataClass = VisitsData.class;
-                        saver = entity -> metaDao.newVisit(entity.getId(), (Visit) entity);
+                        saver = entity -> metaDao.newVisit((Visit) entity);
                         break;
                     default:
                         continue;

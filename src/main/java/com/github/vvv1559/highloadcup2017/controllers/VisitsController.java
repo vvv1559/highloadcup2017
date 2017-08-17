@@ -28,12 +28,12 @@ public class VisitsController implements EntityController<Visit> {
     @Override
     public ResponseEntity updateEntity(@PathVariable int id, @RequestBody Visit visit) {
         metaDao.updateVisit(id, visit);
-        return ResponseEntity.ok().build();
+        return EntityController.emptyJsonResponse();
     }
 
     @Override
-    public ResponseEntity newEntity(@PathVariable int id, @RequestBody Visit visit) {
-        metaDao.newVisit(id, visit);
-        return ResponseEntity.ok().build();
+    public ResponseEntity newEntity(@RequestBody Visit visit) {
+        metaDao.newVisit(visit);
+        return EntityController.emptyJsonResponse();
     }
 }

@@ -21,8 +21,8 @@ public class MetaDao {
         return entity;
     }
 
-    private <T> void newEntity(int id, T entity, Map<Integer, T> storage) {
-        storage.put(id, entity);
+    private <T extends Entity> void newEntity(T entity, Map<Integer, T> storage) {
+        storage.put(entity.getId(), entity);
     }
 
     private <T> void updateEntity(int id, T entity, Map<Integer, T> storage) {
@@ -37,8 +37,8 @@ public class MetaDao {
         return getEntity(userId, users);
     }
 
-    public void newUser(int userId, User user) {
-        newEntity(userId, user, users);
+    public void newUser(User user) {
+        newEntity(user, users);
     }
 
     public void updateUser(int userId, User user) {
@@ -67,8 +67,8 @@ public class MetaDao {
             .mapToDouble(Byte::floatValue).average().orElse(0.0d);
     }
 
-    public void newLocation(int locationId, Location location) {
-        newEntity(locationId, location, locations);
+    public void newLocation(Location location) {
+        newEntity(location, locations);
     }
 
     public void updateLocation(int locationId, Location location) {
@@ -79,8 +79,8 @@ public class MetaDao {
         return getEntity(visitId, visits);
     }
 
-    public void newVisit(int visitId, Visit visit) {
-        newEntity(visitId, visit, visits);
+    public void newVisit(Visit visit) {
+        newEntity(visit, visits);
     }
 
     public void updateVisit(int visitId, Visit visit) {

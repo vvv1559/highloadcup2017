@@ -26,15 +26,15 @@ public class UsersController implements EntityController<User> {
     }
 
     @Override
-    public ResponseEntity newEntity(@PathVariable int id, @RequestBody User user) {
-        metaDao.newUser(id, user);
-        return ResponseEntity.ok().build();
+    public ResponseEntity newEntity(@RequestBody User user) {
+        metaDao.newUser(user);
+        return EntityController.emptyJsonResponse();
     }
 
     @Override
     public ResponseEntity updateEntity(@PathVariable int id, @RequestBody User user) {
         metaDao.updateUser(id, user);
-        return ResponseEntity.ok().build();
+        return EntityController.emptyJsonResponse();
     }
 
     @GetMapping("{id}/visits")

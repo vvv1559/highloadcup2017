@@ -28,15 +28,15 @@ public class LocationsController implements EntityController<Location> {
     }
 
     @Override
-    public ResponseEntity newEntity(@PathVariable int id, @RequestBody Location location) {
-        metaDao.newLocation(id, location);
-        return ResponseEntity.ok().build();
+    public ResponseEntity newEntity(@RequestBody Location location) {
+        metaDao.newLocation(location);
+        return EntityController.emptyJsonResponse();
     }
 
     @Override
     public ResponseEntity updateEntity(@PathVariable int id, @RequestBody Location location) {
         metaDao.updateLocation(id, location);
-        return ResponseEntity.ok().build();
+        return EntityController.emptyJsonResponse();
     }
 
     @GetMapping(value = "{id}/avg", produces = MediaType.APPLICATION_JSON_VALUE)
