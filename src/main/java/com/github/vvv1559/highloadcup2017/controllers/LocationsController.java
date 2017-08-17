@@ -4,12 +4,13 @@ import com.github.vvv1559.highloadcup2017.dao.model.Location;
 import com.github.vvv1559.highloadcup2017.dao.model.MetaDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.DecimalFormat;
 
 @RestController
-@RequestMapping("/locations/{id}")
+@RequestMapping("/locations")
 public class LocationsController implements EntityController<Location> {
 
     private final MetaDao metaDao;
@@ -22,24 +23,23 @@ public class LocationsController implements EntityController<Location> {
     }
 
     @Override
-    @GetMapping
     public Location getEntity(@PathVariable int id) {
         return metaDao.getLocation(id);
     }
 
     @Override
-    @PostMapping
-    public void newEntity(@PathVariable int id, @RequestBody Location location) {
+    public ResponseEntity newEntity(@PathVariable int id, @RequestBody Location location) {
         metaDao.newLocation(id, location);
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    @PostMapping("new")
-    public void updateEntity(@PathVariable int id, @RequestBody Location location) {
+    public ResponseEntity updateEntity(@PathVariable int id, @RequestBody Location location) {
         metaDao.updateLocation(id, location);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "avg", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "{id}/avg", produces = MediaType.APPLICATION_JSON_VALUE)
     public String locationAvg(@PathVariable int id) {
         return "{\"avg\":" + formatThreadLocal.get().format(metaDao.getAllLocationsAvg(id)) + "}";
     }

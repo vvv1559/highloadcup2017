@@ -4,12 +4,13 @@ import com.github.vvv1559.highloadcup2017.dao.model.MetaDao;
 import com.github.vvv1559.highloadcup2017.dao.model.User;
 import com.github.vvv1559.highloadcup2017.dao.model.Visit;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users/{id}")
+@RequestMapping("/users")
 public class UsersController implements EntityController<User> {
 
     private final MetaDao metaDao;
@@ -20,24 +21,23 @@ public class UsersController implements EntityController<User> {
     }
 
     @Override
-    @GetMapping
     public User getEntity(@PathVariable int id) {
         return metaDao.getUser(id);
     }
 
     @Override
-    @PostMapping
-    public void newEntity(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity newEntity(@PathVariable int id, @RequestBody User user) {
         metaDao.newUser(id, user);
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    @PostMapping("new")
-    public void updateEntity(@PathVariable int id, @RequestBody User user) {
+    public ResponseEntity updateEntity(@PathVariable int id, @RequestBody User user) {
         metaDao.updateUser(id, user);
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("visits")
+    @GetMapping("{id}/visits")
     public VisitsResponse getUserVisits(@PathVariable int id) {
         return new VisitsResponse(metaDao.getUserVisits(id));
     }

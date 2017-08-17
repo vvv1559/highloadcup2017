@@ -7,10 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Consumer;
@@ -70,7 +69,8 @@ public class InitialDataLoader {
                         continue;
                 }
 
-                InputStreamReader jsonReader = new InputStreamReader(zipFile.getInputStream(zipEntry));
+                Reader jsonReader = new BufferedReader(
+                    new InputStreamReader(zipFile.getInputStream(zipEntry), StandardCharsets.UTF_8));
                 InitialData<Entity> initialData = gson.<InitialData<Entity>>fromJson(jsonReader, dataClass);
                 initialData.getData().forEach(saver);
             }
