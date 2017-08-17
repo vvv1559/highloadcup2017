@@ -3,17 +3,20 @@ package com.github.vvv1559.highloadcup2017.controllers;
 import com.github.vvv1559.highloadcup2017.dao.model.MetaDao;
 import com.github.vvv1559.highloadcup2017.dao.model.User;
 import com.github.vvv1559.highloadcup2017.dao.model.Visit;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UsersController implements EntityController<User> {
 
     private final MetaDao metaDao;
+    private final Gson gson = new Gson();
+
 
     @Autowired
     public UsersController(MetaDao metaDao) {
@@ -21,25 +24,25 @@ public class UsersController implements EntityController<User> {
     }
 
     @Override
-    public User getEntity(@PathVariable int id) {
-        return metaDao.getUser(id);
+    public String getEntity(@PathVariable int id) {
+        return gson.toJson(metaDao.getUser(id));
     }
 
     @Override
-    public ResponseEntity newEntity(@RequestBody User user) {
+    public String newEntity(@RequestBody User user) {
         metaDao.newUser(user);
-        return EntityController.emptyJsonResponse();
+        return gson.toJson(EntityController.emptyJsonResponse());
     }
 
     @Override
-    public ResponseEntity updateEntity(@PathVariable int id, @RequestBody User user) {
+    public String updateEntity(@PathVariable int id, @RequestBody User user) {
         metaDao.updateUser(id, user);
-        return EntityController.emptyJsonResponse();
+        return gson.toJson(EntityController.emptyJsonResponse());
     }
 
     @GetMapping("{id}/visits")
-    public VisitsResponse getUserVisits(@PathVariable int id) {
-        return new VisitsResponse(metaDao.getUserVisits(id));
+    public String getUserVisits(@PathVariable int id) {
+        return gson.toJson(new VisitsResponse(metaDao.getUserVisits(id)));
     }
 
     private class VisitsResponse {

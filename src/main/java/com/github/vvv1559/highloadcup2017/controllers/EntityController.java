@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 interface EntityController<T extends Entity> {
 
     @GetMapping("{id}")
-    T getEntity(int id);
+    String getEntity(int id);
 
     @PostMapping("new")
-    ResponseEntity newEntity(T entity);
+    String newEntity(T entity);
 
     @PostMapping("{id}")
-    ResponseEntity updateEntity(int id, T entity);
+    String updateEntity(int id, T entity);
 
     static ResponseEntity emptyJsonResponse() {
         return new ResponseEntity<>(new EmptyJsonResponse(), HttpStatus.OK);
