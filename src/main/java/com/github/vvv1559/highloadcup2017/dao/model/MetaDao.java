@@ -15,30 +15,36 @@ public class MetaDao {
     private Map<Integer, Location> locations = new ConcurrentHashMap<>();
     private Map<Integer, Visit> visits = new ConcurrentHashMap<>();
 
+    private static void checkNotNull(Object parameter) {
+        if (parameter == null) {
+            throw new ValidationException();
+        }
+    }
+    
     private void validateUser(User user) {
-        Preconditions.checkArgument(user.getId() != null);
-        Preconditions.checkArgument(user.getGender() != null);
-        Preconditions.checkArgument(user.getEmail() != null);
-        Preconditions.checkArgument(user.getFirstName() != null);
-        Preconditions.checkArgument(user.getLastName() != null);
-        Preconditions.checkArgument(user.getBirthDateTimestamp() != null);
+        MetaDao.checkNotNull(user.getId());
+        MetaDao.checkNotNull(user.getGender());
+        MetaDao.checkNotNull(user.getEmail());
+        MetaDao.checkNotNull(user.getFirstName());
+        MetaDao.checkNotNull(user.getLastName());
+        MetaDao.checkNotNull(user.getBirthDateTimestamp());
     }
 
     private void validateLocation(Location location) {
-        Preconditions.checkArgument(location.getId() != null);
-        Preconditions.checkArgument(location.getCity() != null);
-        Preconditions.checkArgument(location.getCountry() != null);
-        Preconditions.checkArgument(location.getDistance() != null);
-        Preconditions.checkArgument(location.getPlace() != null);
+        MetaDao.checkNotNull(location.getId());
+        MetaDao.checkNotNull(location.getCity());
+        MetaDao.checkNotNull(location.getCountry());
+        MetaDao.checkNotNull(location.getDistance());
+        MetaDao.checkNotNull(location.getPlace());
 
     }
 
     private void validateVisit(Visit visit) {
-        Preconditions.checkArgument(visit.getId() != null);
-        Preconditions.checkArgument(visit.getLocation() != null);
-        Preconditions.checkArgument(visit.getMark() != null);
-        Preconditions.checkArgument(visit.getUser() != null);
-        Preconditions.checkArgument(visit.getVisitedAtTimestamp() != null);
+        MetaDao.checkNotNull(visit.getId());
+        MetaDao.checkNotNull(visit.getLocation());
+        MetaDao.checkNotNull(visit.getMark());
+        MetaDao.checkNotNull(visit.getUser());
+        MetaDao.checkNotNull(visit.getVisitedAtTimestamp());
     }
 
     private <T> T getEntity(int id, Map<Integer, T> storage) {
