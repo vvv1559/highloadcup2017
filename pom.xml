@@ -5,7 +5,7 @@
 
     <groupId>com.github.vvv1559</groupId>
     <artifactId>highloadcup2017</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>highloadcup2017</name>
@@ -50,6 +50,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+
     </build>
 
 
