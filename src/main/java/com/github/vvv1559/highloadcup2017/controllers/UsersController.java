@@ -6,17 +6,20 @@ import com.github.vvv1559.highloadcup2017.dao.model.Visit;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UsersController implements EntityController<User> {
 
     private final MetaDao metaDao;
     private final Gson gson = new Gson();
-
 
     @Autowired
     public UsersController(MetaDao metaDao) {
@@ -31,13 +34,13 @@ public class UsersController implements EntityController<User> {
     @Override
     public String newEntity(@RequestBody User user) {
         metaDao.newUser(user);
-        return gson.toJson(EntityController.emptyJsonResponse());
+        return EntityController.EMPTY_RESPONSE;
     }
 
     @Override
     public String updateEntity(@PathVariable int id, @RequestBody User user) {
         metaDao.updateUser(id, user);
-        return gson.toJson(EntityController.emptyJsonResponse());
+        return EntityController.EMPTY_RESPONSE;
     }
 
     @GetMapping("{id}/visits")

@@ -31,13 +31,13 @@ public class LocationsController implements EntityController<Location> {
     @Override
     public String newEntity(@RequestBody Location location) {
         metaDao.newLocation(location);
-        return gson.toJson(EntityController.emptyJsonResponse());
+        return EntityController.EMPTY_RESPONSE;
     }
 
     @Override
     public String updateEntity(@PathVariable int id, @RequestBody Location location) {
         metaDao.updateLocation(id, location);
-        return gson.toJson(EntityController.emptyJsonResponse());
+        return EntityController.EMPTY_RESPONSE;
     }
 
     @GetMapping(value = "{id}/avg")
