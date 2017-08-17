@@ -3,7 +3,6 @@ package com.github.vvv1559.highloadcup2017.controllers;
 import com.github.vvv1559.highloadcup2017.dao.model.MetaDao;
 import com.github.vvv1559.highloadcup2017.dao.model.User;
 import com.github.vvv1559.highloadcup2017.dao.model.Visit;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import java.util.List;
 public class UsersController implements EntityController<User> {
 
     private final MetaDao metaDao;
-    private final Gson gson = new Gson();
 
     @Autowired
     public UsersController(MetaDao metaDao) {
@@ -28,7 +26,7 @@ public class UsersController implements EntityController<User> {
 
     @Override
     public String getEntity(@PathVariable int id) {
-        return gson.toJson(metaDao.getUser(id));
+        return GSON.toJson(metaDao.getUser(id));
     }
 
     @Override
@@ -45,7 +43,7 @@ public class UsersController implements EntityController<User> {
 
     @GetMapping("{id}/visits")
     public String getUserVisits(@PathVariable int id) {
-        return gson.toJson(new VisitsResponse(metaDao.getUserVisits(id)));
+        return GSON.toJson(new VisitsResponse(metaDao.getUserVisits(id)));
     }
 
     private class VisitsResponse {

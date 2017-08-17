@@ -1,7 +1,7 @@
 package com.github.vvv1559.highloadcup2017.dao.model;
 
 public class Location implements Entity {
-    private int id;
+    private Integer id;
 
     private String place;
 
@@ -9,14 +9,14 @@ public class Location implements Entity {
 
     private String city;
 
-    private int distance;
+    private Integer distance;
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,11 +44,11 @@ public class Location implements Entity {
         this.city = city;
     }
 
-    public int getDistance() {
+    public Integer getDistance() {
         return distance;
     }
 
-    public void setDistance(int distance) {
+    public void setDistance(Integer distance) {
         this.distance = distance;
     }
 }

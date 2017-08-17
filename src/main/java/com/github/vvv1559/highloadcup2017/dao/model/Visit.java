@@ -4,57 +4,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;
 
 public class Visit implements Entity {
-    private int id;
+    private Integer id;
 
-    private int location;
+    private Integer location;
 
-    private int user;
+    private Integer user;
 
     @SerializedName("visited_at")
-    private int visitedAtTimestamp;
+    private Integer visitedAtTimestamp;
 
-    private byte mark;
+    private Integer mark;
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public int getLocation() {
+    public Integer getLocation() {
         return location;
     }
 
-    public void setLocation(int location) {
+    public void setLocation(Integer location) {
         this.location = location;
     }
 
-    public int getUser() {
+    public Integer getUser() {
         return user;
     }
 
-    public void setUser(int user) {
+    public void setUser(Integer user) {
         this.user = user;
     }
 
     @JsonProperty("visited_at")
-    public int getVisitedAtTimestamp() {
+    public Integer getVisitedAtTimestamp() {
         return visitedAtTimestamp;
     }
 
     @JsonProperty("visited_at")
-    public void setVisitedAtTimestamp(int visitedAtTimestamp) {
+    public void setVisitedAtTimestamp(Integer visitedAtTimestamp) {
         this.visitedAtTimestamp = visitedAtTimestamp;
     }
 
-    public byte getMark() {
+    public Integer getMark() {
         return mark;
     }
 
-    public void setMark(byte mark) {
+    public void setMark(Integer mark) {
         this.mark = mark;
     }
 }

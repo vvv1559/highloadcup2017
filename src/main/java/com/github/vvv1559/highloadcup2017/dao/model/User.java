@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class User implements Entity {
 
-    private int id;
+    private Integer id;
 
     private String email;
 
@@ -15,17 +15,17 @@ public class User implements Entity {
     @SerializedName("last_name")
     private String lastName;
 
-    private char gender;
+    private Character gender;
 
     @SerializedName("birth_date")
-    private int birthDateTimestamp;
+    private Integer birthDateTimestamp;
 
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -57,7 +57,7 @@ public class User implements Entity {
         this.lastName = lastName;
     }
 
-    public char getGender() {
+    public Character getGender() {
         return gender;
     }
 
@@ -66,12 +66,12 @@ public class User implements Entity {
     }
 
     @JsonProperty("birth_date")
-    public int getBirthDateTimestamp() {
+    public Integer getBirthDateTimestamp() {
         return birthDateTimestamp;
     }
 
     @JsonProperty("birth_date")
-    public void setBirthDateTimestamp(int birthDateTimestamp) {
+    public void setBirthDateTimestamp(Integer birthDateTimestamp) {
         this.birthDateTimestamp = birthDateTimestamp;
     }
 }
