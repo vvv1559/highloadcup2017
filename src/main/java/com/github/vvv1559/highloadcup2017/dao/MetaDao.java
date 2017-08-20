@@ -3,9 +3,11 @@ package com.github.vvv1559.highloadcup2017.dao;
 import com.github.vvv1559.highloadcup2017.dao.model.*;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -62,7 +64,7 @@ public class MetaDao {
         prevEntityState.update(entity);
     }
 
-    public List<Visit> getUserVisits(int userId, Integer fromDate, Integer toDate, String country, Integer toDistance) {
+    public List<VisitInfo> getUserVisits(int userId, Integer fromDate, Integer toDate, String country, Integer toDistance) {
         if (!users.containsKey(userId)) {
             throw new EntityNotFoundException();
         }
@@ -90,6 +92,7 @@ public class MetaDao {
 
         return visitStream
             .sorted(Comparator.comparingInt(Visit::getVisitedAtTimestamp))
+            .map(visit -> new VisitInfo(visit, locations.get(visit.getLocation()).getPlace()))
             .collect(Collectors.toList());
     }
 
@@ -109,14 +112,13 @@ public class MetaDao {
         if (fromAge == null && toAge == null && gender == null) {
             usersFilter = null;
         } else {
-            final long currentTime = TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis());
             Stream<User> userStream = users.values().stream();
             if (fromAge != null) {
-                userStream = userStream.filter(u -> getAge(currentTime, u) > fromAge);
+                userStream = userStream.filter(u -> getAge(u) > fromAge);
             }
 
             if (toAge != null) {
-                userStream = userStream.filter(u -> getAge(currentTime, u) < toAge);
+                userStream = userStream.filter(u -> getAge(u) < toAge);
             }
 
             if (gender != null) {
@@ -137,7 +139,22 @@ public class MetaDao {
             .orElse(0.0d);
     }
 
-    private long getAge(long currentTime, User u) {
-        return TimeUnit.MILLISECONDS.toDays(u.getBirthDateTimestamp() - currentTime);
+    private int getAge(User u) {
+        LocalDate birthDay = LocalDate.from(new Timestamp(u.getBirthDateTimestamp()).toLocalDateTime());
+        LocalDate today = LocalDate.now();
+        return Period.between(birthDay, today).getYears();
+
+    }
+
+    public static class VisitInfo {
+        int mark;
+        int visited_at;
+        String place;
+
+        private VisitInfo(Visit visit, String place) {
+            this.mark = visit.getMark();
+            this.visited_at = visit.getVisitedAtTimestamp();
+            this.place = place;
+        }
     }
 }

@@ -103,13 +103,14 @@ public class ServerController {
     }
 
     private class VisitsResponse {
-        private final List<Visit> visits;
 
-        private VisitsResponse(List<Visit> visits) {
+        private final List<MetaDao.VisitInfo> visits;
+
+        private VisitsResponse(List<MetaDao.VisitInfo> visits) {
             this.visits = visits;
         }
 
-        public List<Visit> getVisits() {
+        public List<MetaDao.VisitInfo> getVisits() {
             return visits;
         }
     }
