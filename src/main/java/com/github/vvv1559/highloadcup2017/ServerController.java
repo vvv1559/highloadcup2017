@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -35,7 +34,7 @@ public class ServerController {
 
     private Entity deserialize(EntityType type, String body) {
         JsonElement element = new JsonParser().parse(body);
-        if (element.getAsJsonObject().entrySet().stream().map(Map.Entry::getValue).anyMatch(Objects::isNull)) {
+        if (element.getAsJsonObject().entrySet().stream().map(Map.Entry::getValue).anyMatch(JsonElement::isJsonNull)) {
             throw new ValidationException();
         }
 
@@ -80,13 +79,27 @@ public class ServerController {
     }
 
     @GetMapping(value = "/locations/{id}/avg")
-    public String locationAvg(@PathVariable int id) {
-        return "{\"avg\":" + formatThreadLocal.get().format(metaDao.getAllLocationsAvg(id)) + "}";
+    public String locationAvg(
+        @PathVariable int id,
+        @RequestParam(value = "fromDate", required = false) Integer fromDate,
+        @RequestParam(value = "toDate", required = false) Integer toDate,
+        @RequestParam(value = "fromAge", required = false) Integer fromAge,
+        @RequestParam(value = "toAge", required = false) Integer toAge,
+        @RequestParam(value = "gender", required = false) Character gender
+    ) {
+        double avg = metaDao.getAllLocationsAvg(id, fromDate, toDate, fromAge, toAge, gender);
+        return "{\"avg\":" + formatThreadLocal.get().format(avg) + "}";
     }
 
     @GetMapping("/users/{id}/visits")
-    public String getUserVisits(@PathVariable int id) {
-        return GSON.toJson(new VisitsResponse(metaDao.getUserVisits(id)));
+    public String getUserVisits(
+        @PathVariable int id,
+        @RequestParam(value = "fromDate", required = false) Integer fromDate,
+        @RequestParam(value = "toDate", required = false) Integer toDate,
+        @RequestParam(value = "country", required = false) String country,
+        @RequestParam(value = "toDistance", required = false) Integer toDistance
+    ) {
+        return GSON.toJson(new VisitsResponse(metaDao.getUserVisits(id, fromDate, toDate, country, toDistance)));
     }
 
     private class VisitsResponse {
