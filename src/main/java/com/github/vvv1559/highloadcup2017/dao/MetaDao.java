@@ -5,9 +5,11 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -139,8 +141,9 @@ public class MetaDao {
             .orElse(0.0d);
     }
 
-    private int getAge(User u) {
-        LocalDate birthDay = LocalDate.from(new Timestamp(u.getBirthDateTimestamp()).toLocalDateTime());
+    static int getAge(User u) {
+        LocalDateTime timestamp = new Timestamp(TimeUnit.SECONDS.toMillis(u.getBirthDateTimestamp())).toLocalDateTime();
+        LocalDate birthDay = LocalDate.from(timestamp);
         LocalDate today = LocalDate.now();
         return Period.between(birthDay, today).getYears();
 

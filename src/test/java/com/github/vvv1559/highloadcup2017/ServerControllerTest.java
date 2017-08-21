@@ -161,8 +161,7 @@ public class ServerControllerTest {
 
     @Test
     public void locationAvg() throws Exception {
-        Assert.assertEquals("{\"avg\":2,0}", serverController.locationAvg(337, null, null, 12, null, 'm'));
-
+        Assert.assertEquals("{\"avg\":2,5}", serverController.locationAvg(337, null, null, 12, null, 'm'));
     }
 
     @Test

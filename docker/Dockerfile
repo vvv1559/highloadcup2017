@@ -8,4 +8,4 @@ ADD target/highloadcup2017-1.0.jar .
 
 EXPOSE 80
 
-CMD java -Dproduction-load=true  -jar highloadcup2017-1.0.jar
+CMD java -Xms3g -Dproduction-load=true -jar highloadcup2017-1.0.jar
