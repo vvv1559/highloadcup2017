@@ -71,7 +71,7 @@ public class ServerController {
     }
 
     @PostMapping("/{type}/new")
-    public String newEntity(@PathVariable String type, @PathVariable int id, @RequestBody String body) {
+    public String newEntity(@PathVariable String type, @RequestBody String body) {
         EntityType entityType = EntityType.valueOf(type);
         Entity entity = deserialize(entityType, body);
         metaDao.newEntity(entityType, entity);

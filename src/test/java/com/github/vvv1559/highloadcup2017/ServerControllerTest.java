@@ -129,7 +129,7 @@ public class ServerControllerTest {
         } catch (EntityNotFoundException ignore) {
         }
 
-        assertResponseIsEmpty(serverController.newEntity(type.name(), id, body));
+        assertResponseIsEmpty(serverController.newEntity(type.name(), body));
         String newEntity = serverController.getEntity(type.name(), id);
         Assert.assertEquals(body, newEntity);
     }
@@ -155,7 +155,7 @@ public class ServerControllerTest {
     @Test(expected = ValidationException.class)
     public void newUserWithEmptyField() throws Exception {
         String body = "{\"id\":200500,\"email\":\"my_cool_email@mail.com\",\"first_name\":null,\"last_name\":\"Данашекая\",\"gender\":\"f\",\"birth_date\":764726400}";
-        serverController.newEntity(EntityType.users.name(), 200500, body);
+        serverController.newEntity(EntityType.users.name(), body);
 
     }
 
@@ -166,6 +166,7 @@ public class ServerControllerTest {
 
     @Test
     public void getUserVisits() throws Exception {
+        Assert.assertEquals(6, serverController.getUserVisits(14, null, null, null, 76).split("},").length);
     }
 
 }

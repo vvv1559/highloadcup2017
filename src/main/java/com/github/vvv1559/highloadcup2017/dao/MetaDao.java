@@ -71,18 +71,24 @@ public class MetaDao {
             throw new EntityNotFoundException();
         }
 
-        if (fromDate != null && toDate != null && fromDate > toDate) {
-            throw new ValidationException();
-        }
+//        if (fromDate != null && toDate != null && fromDate > toDate) {
+//            throw new ValidationException();
+//        }
 
         Set<Integer> locationsFilter;
-        if (country == null) {
+        if (country == null && toDistance == null) {
             locationsFilter = null;
         } else {
-            locationsFilter = locations.values().stream()
-                .filter(l -> l.getCountry().equals(country))
-                .map(Location::getId)
-                .collect(Collectors.toSet());
+            Stream<Location> locationStream = locations.values().stream();
+            if (country != null) {
+                locationStream = locationStream.filter(l -> l.getCountry().equals(country));
+            }
+
+            if (toDistance != null) {
+                locationStream = locationStream.filter(l -> l.getDistance() < toDistance);
+            }
+
+            locationsFilter = locationStream.map(Location::getId).collect(Collectors.toSet());
         }
 
         Stream<Visit> visitStream = visits.values().stream().filter(visit -> visit.getUser() == userId);
@@ -90,7 +96,6 @@ public class MetaDao {
         if (fromDate != null) visitStream = visitStream.filter(v -> v.getVisitedAtTimestamp() > fromDate);
         if (toDate != null) visitStream = visitStream.filter(v -> v.getVisitedAtTimestamp() < toDate);
         if (locationsFilter != null) visitStream = visitStream.filter(v -> locationsFilter.contains(v.getId()));
-        if (toDistance != null) visitStream = visitStream.filter(v -> v.getLocation() < toDistance);
 
         return visitStream
             .sorted(Comparator.comparingInt(Visit::getVisitedAtTimestamp))
