@@ -71,10 +71,6 @@ public class MetaDao {
             throw new EntityNotFoundException();
         }
 
-//        if (fromDate != null && toDate != null && fromDate > toDate) {
-//            throw new ValidationException();
-//        }
-
         Set<Integer> locationsFilter;
         if (country == null && toDistance == null) {
             locationsFilter = null;
@@ -141,7 +137,7 @@ public class MetaDao {
 
         return visitStream
             .map(Visit::getMark)
-            .mapToDouble(Integer::floatValue)
+            .mapToDouble(Integer::doubleValue)
             .average()
             .orElse(0.0d);
     }
@@ -151,7 +147,6 @@ public class MetaDao {
         LocalDate birthDay = LocalDate.from(timestamp);
         LocalDate today = LocalDate.now();
         return Period.between(birthDay, today).getYears();
-
     }
 
     public static class VisitInfo {

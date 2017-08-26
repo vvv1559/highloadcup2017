@@ -17,4 +17,15 @@ public class MetaDaoTest {
         Assert.assertEquals(2, MetaDao.getAge(user));
     }
 
+
+    @Test
+    public void getAgeBefore1970() throws Exception {
+        User user = new User();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, 1930);
+        user.setBirthDateTimestamp((int) TimeUnit.MILLISECONDS.toSeconds(calendar.getTimeInMillis()));
+
+        Calendar now = Calendar.getInstance();
+        Assert.assertEquals(now.get(Calendar.YEAR) - calendar.get(Calendar.YEAR), MetaDao.getAge(user));
+    }
 }

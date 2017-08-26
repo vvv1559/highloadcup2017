@@ -10,7 +10,6 @@ import com.google.gson.JsonParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -32,6 +31,15 @@ public class ServerController {
         this.formatThreadLocal = ThreadLocal.withInitial(() -> new DecimalFormat("0.0####"));
 
     }
+
+    private int parseId(String id) {
+        try {
+            return Integer.parseInt(id);
+        } catch (NumberFormatException e) {
+            throw new EntityNotFoundException();
+        }
+    }
+
 
     private Entity deserialize(EntityType type, String body) {
         JsonElement element = new JsonParser().parse(body);
@@ -58,16 +66,16 @@ public class ServerController {
     }
 
     @GetMapping("/{type}/{id}")
-    public String getEntity(@PathVariable String type, @PathVariable int id) {
+    public String getEntity(@PathVariable String type, @PathVariable String id) {
         EntityType entityType = EntityType.valueOf(type);
-        return GSON.toJson(metaDao.getEntity(entityType, id));
+        return GSON.toJson(metaDao.getEntity(entityType, parseId(id)));
     }
 
     @PostMapping("/{type}/{id}")
-    public String updateEntity(@PathVariable String type, @PathVariable int id, @RequestBody String body) {
+    public String updateEntity(@PathVariable String type, @PathVariable String id, @RequestBody String body) {
         EntityType entityType = EntityType.valueOf(type);
         Entity entity = deserialize(entityType, body);
-        metaDao.updateEntity(entityType, id, entity);
+        metaDao.updateEntity(entityType, parseId(id), entity);
         return EMPTY_RESPONSE;
     }
 
@@ -81,26 +89,26 @@ public class ServerController {
 
     @GetMapping(value = "/locations/{id}/avg")
     public String locationAvg(
-        @PathVariable int id,
+        @PathVariable String id,
         @RequestParam(value = "fromDate", required = false) Integer fromDate,
         @RequestParam(value = "toDate", required = false) Integer toDate,
         @RequestParam(value = "fromAge", required = false) Integer fromAge,
         @RequestParam(value = "toAge", required = false) Integer toAge,
         @RequestParam(value = "gender", required = false) Character gender
     ) {
-        double avg = metaDao.getAllLocationsAvg(id, fromDate, toDate, fromAge, toAge, gender);
+        double avg = metaDao.getAllLocationsAvg(parseId(id), fromDate, toDate, fromAge, toAge, gender);
         return "{\"avg\":" + formatThreadLocal.get().format(avg) + "}";
     }
 
     @GetMapping("/users/{id}/visits")
     public String getUserVisits(
-        @PathVariable int id,
+        @PathVariable String id,
         @RequestParam(value = "fromDate", required = false) Integer fromDate,
         @RequestParam(value = "toDate", required = false) Integer toDate,
         @RequestParam(value = "country", required = false) String country,
         @RequestParam(value = "toDistance", required = false) Integer toDistance
     ) {
-        return GSON.toJson(new VisitsResponse(metaDao.getUserVisits(id, fromDate, toDate, country, toDistance)));
+        return GSON.toJson(new VisitsResponse(metaDao.getUserVisits(parseId(id), fromDate, toDate, country, toDistance)));
     }
 
     private class VisitsResponse {
