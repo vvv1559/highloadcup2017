@@ -136,10 +136,9 @@ public class MetaDao {
         }
 
         return visitStream
-            .map(Visit::getMark)
-            .mapToDouble(Integer::doubleValue)
+            .mapToInt(Visit::getMark)
             .average()
-            .orElse(0.0d);
+            .orElse(0);
     }
 
     static int getAge(User u) {
