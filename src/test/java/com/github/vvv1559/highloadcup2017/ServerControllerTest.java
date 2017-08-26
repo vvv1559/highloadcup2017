@@ -166,7 +166,7 @@ public class ServerControllerTest {
 
     @Test
     public void getUserVisits() throws Exception {
-        Assert.assertEquals(6, serverController.getUserVisits(14, null, null, null, 76).split("},").length);
+        Assert.assertEquals(19, serverController.getUserVisits(14, null, null, null, 76).split("},").length);
     }
 
 }

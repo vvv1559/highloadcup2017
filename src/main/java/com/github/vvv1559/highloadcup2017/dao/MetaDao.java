@@ -95,7 +95,7 @@ public class MetaDao {
 
         if (fromDate != null) visitStream = visitStream.filter(v -> v.getVisitedAtTimestamp() > fromDate);
         if (toDate != null) visitStream = visitStream.filter(v -> v.getVisitedAtTimestamp() < toDate);
-        if (locationsFilter != null) visitStream = visitStream.filter(v -> locationsFilter.contains(v.getId()));
+        if (locationsFilter != null) visitStream = visitStream.filter(v -> locationsFilter.contains(v.getLocation()));
 
         return visitStream
             .sorted(Comparator.comparingInt(Visit::getVisitedAtTimestamp))
